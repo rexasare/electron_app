@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Welcome to Video Info</h1>
+    <form action="">
+      <div>
+        <label>Select a Video</label>
+        <input type="file" accept="video/*" />
+      </div>
+      <button type="submit">Get info</button>
+    </form>
+
+    <h1 id="results"></h1>
+
+    <script>
+      document.querySelector("form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const { path } = document.querySelector("input").files[0];
+        window.ipcRenderer.send("video:submit", path);
+      });
+
+      window.ipcRenderer.on("video:metadata", (event, duration) => {
+        document.querySelector(
+          "#results"
+        ).innerHTML = `Video is ${duration} seconds`;
+      });
+    </script>
+  </body>
+</html>
